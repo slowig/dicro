@@ -1,0 +1,26 @@
+{
+  "name": "slowig/dicro",
+  "description": "Micro and simple dependency injector for PHP.",
+  "prefer-stable": true,
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Grzegorz Słowik",
+      "email": "grzegorz@slowik.io"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Dicro\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "php": "^7.1.8 || ^8.0"
+  }
+}
