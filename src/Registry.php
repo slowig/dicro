@@ -23,6 +23,13 @@ class Registry
 
     public function has(string $name)
     {
-        return isset($this->entries[$name]);
+        return isset($this->entries[$name]) && $this->entries[$name] !== null;
+    }
+
+    public function get(string $needle)
+    {
+        if (!$this->has($needle)) return null;
+
+        return $this->entries[$needle]->getTarget();
     }
 }
