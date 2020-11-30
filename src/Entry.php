@@ -11,6 +11,10 @@ class Entry
      */
     protected $source;
     /**
+     * @var string
+     */
+    protected $target;
+    /**
      * @var bool
      */
     protected $hasInterface = true;
@@ -21,7 +25,8 @@ class Entry
 
     public function __construct(string $source, string $target = null)
     {
-        $this->source = ($target) ? $target : $source;
+        $this->source = $source;
+        $this->target = ($target) ? $target : $source;
         if ($target == null) {
             $this->hasInterface = false;
         }
@@ -35,5 +40,10 @@ class Entry
     public function getSource()
     {
         return $this->source;
+    }
+
+    public function getTarget()
+    {
+        return $this->target;
     }
 }
