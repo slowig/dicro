@@ -4,19 +4,31 @@
 namespace Dicro;
 
 
+use Dicro\Exceptions\ClassNotFoundException;
+
 class Container
 {
-    protected $interfacesMap = [];
+    /**
+     * @var Registry
+     */
+    protected $registry;
 
-    public function register(string $name, string $implementation = null)
+    public function __construct()
     {
-        if ($implementation === null) $implementation = $name;
-        $this->interfacesMap[$name] = $implementation;
+        $this->registry = new Registry();
+    }
+
+    public function register(string $source, string $target = null)
+    {
+        $this->registry->add(new Entry($source, $target));
     }
 
     public function resolve(string $needle)
     {
-        $target = $this->interfacesMap[$needle];
+        if (!$this->registry->has($needle)) {
+            throw new ClassNotFoundException("Class ".$needle." not found. Did you register it?");
+        }
+        $target = $this->registry->get($needle);
 
         $targetReflection = new \ReflectionClass($target);
         $targetReflectionConstructor = $targetReflection->getConstructor();
