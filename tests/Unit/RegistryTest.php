@@ -22,7 +22,7 @@ class RegistryTest extends TestCase
     {
         $this->registry->add(new Entry('source', 'target'));
 
-        $this->assertTrue($this->registry->has('test'));
+        $this->assertTrue($this->registry->has('source'));
     }
 
     protected function tearDown(): void
