@@ -25,6 +25,13 @@ class RegistryTest extends TestCase
         $this->assertTrue($this->registry->has('source'));
     }
 
+    public function test_should_return_target()
+    {
+        $this->registry->add(new Entry('source', 'target'));
+
+        $this->assertEquals('target', $this->registry->get('source'));
+    }
+
     protected function tearDown(): void
     {
         $this->registry = null;
