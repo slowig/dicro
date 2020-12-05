@@ -34,17 +34,18 @@ class Container
         $targetReflection = new \ReflectionClass($target->getTarget());
         $targetReflectionConstructor = $targetReflection->getConstructor();
 
-        if (!$targetReflectionConstructor || count($targetReflectionConstructor->getParameters()) === 0) return $targetReflection->newInstance();
+        if (!$targetReflectionConstructor || count($targetReflectionConstructor->getParameters()) === 0)
+            return $targetReflection->newInstance();
 
-        $argumentsInstanceList = [];
+        $instanceArgumentsList = [];
         foreach ($targetReflectionConstructor->getParameters() as $parameter) {
             if ($target->isBound($parameter->getName())) {
-                $argumentsInstanceList[] = $target->getBoundValue($parameter->getName());
+                $instanceArgumentsList[] = $target->getBoundValue($parameter->getName());
                 continue;
             }
-            $argumentsInstanceList[] = $this->resolve($parameter->getClass()->getName());
+            $instanceArgumentsList[] = $this->resolve($parameter->getClass()->getName());
         }
-
-        return $targetReflection->newInstance(...$argumentsInstanceList);
+        
+        return $targetReflection->newInstance(...$instanceArgumentsList);
     }
 }
