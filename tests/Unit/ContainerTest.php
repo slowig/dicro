@@ -65,6 +65,19 @@ class ContainerTest extends TestCase
         $this->assertEquals('binding Test', $instance->example);
     }
 
+    public function test_should_resolve_nested_classes()
+    {
+        $this->container->register(ExampleImplementation::class);
+        $this->container->register(ExampleArgumentsImplementation::class);
+        $this->container->register(ExampleBindingsImplementation::class)->bind(['example' => 'any example value']);
+        $this->container->register(ExampleNestedArgumentsImplementation::class)->bind(['string' => 'any example string value']);
+
+        $instance = $this->container->resolve(ExampleNestedArgumentsImplementation::class);
+
+        $this->assertNotNull($instance);
+        $this->assertEquals('any example string value', $instance->string);
+    }
+
     protected function tearDown(): void
     {
         parent::tearDown();
@@ -89,5 +102,18 @@ class ExampleBindingsImplementation
     public function __construct(string $example)
     {
         $this->example = $example;
+    }
+}
+class ExampleNestedArgumentsImplementation
+{
+    public $class;
+    public $string;
+    public $bindings;
+
+    public function __construct(ExampleArgumentsImplementation $class, $string, ExampleBindingsImplementation $bindings)
+    {
+        $this->class = $class;
+        $this->string = $string;
+        $this->bindings = $bindings;
     }
 }
