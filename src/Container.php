@@ -20,7 +20,7 @@ class Container
 
     public function register(string $source, string $target = null)
     {
-        $this->registry->add(new Entry($source, $target));
+        return $this->registry->add(new Entry($source, $target));
     }
 
     public function resolve(string $needle)
@@ -28,15 +28,20 @@ class Container
         if (!$this->registry->has($needle)) {
             throw new ClassNotFoundException("Class ".$needle." not found. Did you register it?");
         }
-        $target = $this->registry->get($needle)->getTarget();
 
-        $targetReflection = new \ReflectionClass($target);
+        $target = $this->registry->get($needle);
+
+        $targetReflection = new \ReflectionClass($target->getTarget());
         $targetReflectionConstructor = $targetReflection->getConstructor();
 
         if (!$targetReflectionConstructor || count($targetReflectionConstructor->getParameters()) === 0) return $targetReflection->newInstance();
 
         $argumentsInstanceList = [];
         foreach ($targetReflectionConstructor->getParameters() as $parameter) {
+            if ($target->isBound($parameter->getName())) {
+                $argumentsInstanceList[] = $target->getBoundValue($parameter->getName());
+                continue;
+            }
             $argumentsInstanceList[] = $this->resolve($parameter->getClass()->getName());
         }
 
