@@ -18,7 +18,7 @@ class Registry
      */
     public function add(Entry $entry)
     {
-        $this->entries[$entry->getSource()] = $entry;
+        return $this->entries[$entry->getSource()] = $entry;
     }
 
     public function has(string $name)
@@ -30,6 +30,7 @@ class Registry
     {
         if (!$this->has($needle)) return null;
 
-        return $this->entries[$needle]->getTarget();
+        return $this->entries[$needle];
     }
+
 }

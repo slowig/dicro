@@ -28,7 +28,7 @@ class Container
         if (!$this->registry->has($needle)) {
             throw new ClassNotFoundException("Class ".$needle." not found. Did you register it?");
         }
-        $target = $this->registry->get($needle);
+        $target = $this->registry->get($needle)->getTarget();
 
         $targetReflection = new \ReflectionClass($target);
         $targetReflectionConstructor = $targetReflection->getConstructor();
