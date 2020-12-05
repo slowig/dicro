@@ -46,4 +46,9 @@ class Entry
     {
         return $this->target;
     }
+
+    public function getBindings()
+    {
+        return $this->arguments;
+    }
 }
