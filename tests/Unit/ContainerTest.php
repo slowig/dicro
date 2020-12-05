@@ -51,6 +51,20 @@ class ContainerTest extends TestCase
         $this->assertInstanceOf(ExampleImplementation::class, $instanceWithArgument->argument);
     }
 
+    public function test_should_bind_arguments()
+    {
+        $this
+            ->container
+            ->register(ExampleBindingsImplementation::class)
+            ->bind([
+                'example' => 'binding Test'
+            ]);
+
+        $instance = $this->container->resolve(ExampleBindingsImplementation::class);
+
+        $this->assertEquals('binding Test', $instance->example);
+    }
+
     protected function tearDown(): void
     {
         parent::tearDown();
@@ -67,5 +81,13 @@ class ExampleArgumentsImplementation
     public function __construct(ExampleImplementation $example)
     {
         $this->argument = $example;
+    }
+}
+class ExampleBindingsImplementation
+{
+    public $example;
+    public function __construct(string $example)
+    {
+        $this->example = $example;
     }
 }
