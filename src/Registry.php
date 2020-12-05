@@ -21,11 +21,19 @@ class Registry
         return $this->entries[$entry->getSource()] = $entry;
     }
 
+    /**
+     * @param string $name
+     * @return bool
+     */
     public function has(string $name)
     {
         return isset($this->entries[$name]) && $this->entries[$name] !== null;
     }
 
+    /**
+     * @param string $needle
+     * @return Entry
+     */
     public function get(string $needle)
     {
         if (!$this->has($needle)) return null;
